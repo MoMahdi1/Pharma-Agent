@@ -1,0 +1,42 @@
+[
+  {
+    "source_id": "metformin-study",
+    "title": "Metformin label: adult clinical study",
+    "section": "14.1, Table 7",
+    "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=286d959a-51cb-4dbd-a3e8-1ea2f00b54c7",
+    "text": "A 29-week double-blind, placebo-controlled multicenter trial studied obese adults with type 2 diabetes inadequately controlled by dietary management. Metformin (141 participants) reduced HbA1c by 1.4 percentage points; placebo (145 participants) increased HbA1c by 0.4 percentage points. This study does not establish long-term outcomes.",
+    "drug": "Metformin",
+    "category": "diabetes",
+    "kind": "label"
+  },
+  {
+    "source_id": "metformin-risk",
+    "title": "Metformin label: risks and adverse reactions",
+    "section": "Boxed warning; 5.2; 6.1",
+    "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=286d959a-51cb-4dbd-a3e8-1ea2f00b54c7",
+    "text": "Postmarketing metformin-associated lactic acidosis cases have resulted in death. Metformin may lower vitamin B12 levels. Common adverse reactions include diarrhea, nausea/vomiting, flatulence, asthenia, indigestion, abdominal discomfort, and headache.",
+    "drug": "Metformin",
+    "category": "diabetes",
+    "kind": "label"
+  },
+  {
+    "source_id": "metformin-interaction",
+    "title": "Metformin label: drug interactions",
+    "section": "7",
+    "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=286d959a-51cb-4dbd-a3e8-1ea2f00b54c7",
+    "text": "Carbonic anhydrase inhibitors, including topiramate, may increase lactic acidosis risk with metformin. Cimetidine and dolutegravir can reduce metformin clearance and increase accumulation. Alcohol can potentiate metformin effects on lactate metabolism.",
+    "drug": "Metformin",
+    "category": "diabetes",
+    "kind": "label"
+  },
+  {
+    "source_id": "metformin-contraindication",
+    "title": "Metformin label: contraindications",
+    "section": "4",
+    "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=286d959a-51cb-4dbd-a3e8-1ea2f00b54c7",
+    "text": "Label contraindications include severe renal impairment (eGFR below 30 mL/min/1.73 m2), hypersensitivity to metformin, and acute or chronic metabolic acidosis, including diabetic ketoacidosis.",
+    "drug": "Metformin",
+    "category": "diabetes",
+    "kind": "label"
+  }
+]

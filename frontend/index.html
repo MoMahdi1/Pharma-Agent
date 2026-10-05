@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pharma Research — Evidence workspace</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="Pharma Research home"><span class="brand-icon">✳</span><span>pharma<span class="brand-light">research</span></span></a>
+  <div class="workspace-label">RESEARCH WORKSPACE</div>
+  <div class="nav-item active"><span>◈</span> Research assistant <span class="nav-arrow">↗</span></div>
+  <div class="sidebar-bottom"><span class="status-dot"></span> Gemini powered <p>One question. Traceable evidence.</p></div>
+</aside>
+<main>
+  <header class="topbar"><span>Workspace <span class="breadcrumb">/ Drug research</span></span><span class="tag">RESEARCH USE ONLY</span></header>
+  <div class="content">
+    <div class="eyebrow"><span class="small-line"></span> EVIDENCE BEFORE ANSWERS</div>
+    <section class="intro"><div><h1>A clearer view of<br><span>pharmaceutical research.</span></h1><p>Explore research, reported risks and drug interactions.<br>Every finding is linked to the evidence behind it.</p></div><div class="intro-mark" aria-hidden="true">✳</div></section>
+    <div class="layout">
+      <div class="primary">
+        <section class="card upload-card">
+          <div class="card-heading"><h2>Add research documents</h2><span class="step">PDF / DOCX / TXT</span></div>
+          <form id="upload-form">
+            <label for="document-file">Choose a text-based document</label>
+            <input id="document-file" type="file" accept=".pdf,.docx,.txt" required>
+            <p class="upload-note">Up to 10 MB. Extracted text is sent to Gemini for indexing. Scanned images are not supported; no OCR.</p>
+            <button id="upload-button" type="submit">Upload & index ↑</button>
+          </form>
+          <div id="upload-feedback" role="status" aria-live="polite" hidden></div>
+          <ul id="document-list" aria-label="Uploaded documents"></ul>
+        </section>
+        <section class="card query-card">
+          <div class="card-heading"><h2>What are you researching?</h2><span class="step">01 / ASK</span></div>
+          <form id="research-form">
+            <label for="document-scope" class="scope-label">Search in</label>
+            <select id="document-scope"><option value="">All indexed evidence</option></select>
+            <button id="delete-document" type="button" disabled>Delete selected document</button>
+            <label class="sr-only" for="question">Research question</label>
+            <textarea id="question" maxlength="3000" required placeholder="e.g. What interaction is reported between metformin and topiramate?"></textarea>
+            <div class="query-footer"><span id="char-count">0 / 3000</span><button id="submit" type="submit">Explore evidence <span>↗</span></button></div>
+          </form>
+          <div class="examples-label">START WITH A QUESTION</div>
+          <div class="examples"><button type="button" data-query="Summarize the metformin placebo-controlled adult research study and its limitations.">Research summary ↗</button><button type="button" data-query="What risks and side effects are reported for metformin?">Reported risks ↗</button><button type="button" data-query="What interaction is reported between metformin and topiramate?">Drug interactions ↗</button><button type="button" data-query="What interactions are documented for Zorvex?">Missing evidence ↗</button><button type="button" data-query="What risks are reported for lisinopril?">Blood pressure ↗</button><button type="button" data-query="What interaction is reported between alendronate and calcium supplements?">Bone health ↗</button><button type="button" data-query="Summarize the Diabetes Prevention Program research paper: population, methods and findings.">Research paper ↗</button></div>
+        </section>
+        <div id="feedback" role="status" aria-live="polite" hidden></div>
+        <section id="empty-state" class="empty-state"><span class="empty-icon">⌕</span><h2>Your research starts here</h2><p>Ask a question to see a structured answer,<br>supporting quotations and source references.</p><div class="empty-steps"><span>01 Ask</span><i>→</i><span>02 Retrieve</span><i>→</i><span>03 Verify</span></div></section>
+        <section id="results" hidden aria-label="Research results">
+          <div class="result-heading"><div><div class="eyebrow">RESEARCH FINDINGS</div><h2 id="result-topic"></h2></div><button id="download" type="button" class="secondary-button">Download JSON ↓</button></div>
+          <div class="result-meta"><span id="result-status"></span><span id="confidence"></span></div>
+          <p id="explanation"></p>
+          <div id="claims"></div>
+          <section id="sources-section" class="card sources"><h3>Sources & references</h3><div id="sources"></div></section>
+          <p id="disclaimer" class="disclaimer"></p>
+        </section>
+      </div>
+      <aside class="right-panel">
+        <section class="card scope-card"><div class="card-heading"><h2>Knowledge snapshot</h2><span class="circle-icon">↗</span></div><div class="drug-name">5 medicines <span>PHARMA</span></div><p>Diabetes, hypertension and bone health. Official labels plus a real research paper.</p><div class="stats"><div><strong id="document-count">15</strong><span>Evidence sections</span></div><div><strong id="source-count">06</strong><span>Evidence sources</span></div></div><p>Metformin · Glipizide<br>Amlodipine · Lisinopril<br>Alendronate</p><div class="coverage"><span>Research findings</span><b>✓</b><span>Risks & contraindications</span><b>✓</b><span>Reported interactions</span><b>✓</b></div><a href="https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=286d959a-51cb-4dbd-a3e8-1ea2f00b54c7" target="_blank" rel="noopener noreferrer">Metformin label ↗</a></section>
+        <section class="principles"><div class="eyebrow">BUILT ON EVIDENCE</div><h3>Useful answers.<br>Clear boundaries.</h3><p>Findings include supporting quotations. When the available evidence is insufficient, the assistant says so.</p><p>This workspace supports general research. Personal treatment and prescribing questions require a qualified clinician.</p></section>
+        <div class="service-status"><span id="service-dot" class="status-dot"></span><span id="service-text">Checking service…</span></div>
+      </aside>
+    </div>
+    <footer><span>Pharma Research · Drug Research Assistant</span><span>Research information, not medical advice.</span></footer>
+  </div>
+</main>
+</body>
+</html>
