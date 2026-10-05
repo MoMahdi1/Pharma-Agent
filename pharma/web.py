@@ -25,9 +25,17 @@ def reply(status, data):
 
 @app.before_request
 def check_origin():
-    if request.method == 'POST' and request.headers.get('Origin') not in (
-        None, f'http://127.0.0.1:{PORT}', f'http://localhost:{PORT}',
-    ):
+    origin = request.headers.get('Origin')
+    if request.method != 'POST' or origin is None:
+        return None
+    # The app may be exposed through a local port forward (for example,
+    # the browser can see :5000 while Flask listens on :8000). Trust only
+    # a same-origin request whose host is still a local loopback address.
+    raw_host = request.host
+    host = (raw_host[1:raw_host.index(']')] if raw_host.startswith('[') and ']' in raw_host
+            else raw_host.split(':', 1)[0]).lower()
+    same_origin = origin.rstrip('/') == request.host_url.rstrip('/')
+    if host not in {'127.0.0.1', 'localhost', '::1'} or not same_origin:
         return reply(403, {'error': 'Origin not allowed'})
 
 

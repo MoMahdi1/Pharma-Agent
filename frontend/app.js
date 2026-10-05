@@ -64,21 +64,29 @@ function message(text, error = false) {
   feedback.textContent = text;
 }
 function render(answer) {
+  const arabic = /[\u0600-\u06ff]/.test(question.value);
   lastAnswer = answer;
+  results.dir = arabic ? 'rtl' : 'ltr';
   document.querySelector('#empty-state').hidden = true;
   document.querySelector('#result-topic').textContent = answer.topic;
-  document.querySelector('#result-status').textContent = statuses[answer.status] || answer.status;
-  document.querySelector('#confidence').textContent = answer.confidence === 'none' ? 'No evidence-based answer' : 'Limited corpus evidence · not clinical certainty';
+  const arabicStatuses = {answered: 'عُثر على أدلة', insufficient_evidence: 'الأدلة غير كافية', refused: 'خارج نطاق البحث'};
+  document.querySelector('#result-status').textContent = arabic ? (arabicStatuses[answer.status] || answer.status) : (statuses[answer.status] || answer.status);
+  document.querySelector('#confidence').textContent = arabic
+    ? (answer.confidence === 'none' ? 'لا توجد إجابة مدعومة بالأدلة' : 'أدلة محدودة في قاعدة المعرفة · لا تعني يقينًا طبيًا')
+    : (answer.confidence === 'none' ? 'No evidence-based answer' : 'Limited corpus evidence · not clinical certainty');
   document.querySelector('#explanation').textContent = answer.explanation;
   document.querySelector('#disclaimer').textContent = answer.disclaimer;
   const claims = document.querySelector('#claims');
   claims.replaceChildren();
   if (answer.status === 'answered') {
-    for (const [field, title] of [['summary','Research summary'],['risks','Reported risks & contraindications'],['interactions','Reported interactions']]) {
+    const sections = arabic
+      ? [['summary','ملخص البحث'],['risks','المخاطر وموانع الاستعمال المذكورة'],['interactions','التداخلات الدوائية المذكورة']]
+      : [['summary','Research summary'],['risks','Reported risks & contraindications'],['interactions','Reported interactions']];
+    for (const [field, title] of sections) {
       const section = element('section', undefined, 'card claim-section');
       section.append(element('h3', title));
       const entries = answer[field];
-      if (!entries.length) section.append(element('p', 'No findings included for this section in the current response.', 'no-claims'));
+      if (!entries.length) section.append(element('p', arabic ? 'لا توجد نتائج لهذا القسم في الإجابة الحالية.' : 'No findings included for this section in the current response.', 'no-claims'));
       for (const claim of entries) {
         const card = element('div', undefined, 'claim');
         card.append(element('p', claim.text));
@@ -92,6 +100,7 @@ function render(answer) {
   }
   const sources = document.querySelector('#sources');
   sources.replaceChildren();
+  document.querySelector('#sources-section h3').textContent = arabic ? 'المصادر والمراجع' : 'Sources & references';
   document.querySelector('#sources-section').hidden = !answer.sources.length;
   for (const source of answer.sources) {
     const link = element('a', `${source.title} ↗`, 'source');
@@ -122,8 +131,15 @@ form.addEventListener('submit', async event => {
   message('Retrieving evidence and checking the answer. This may take a moment…');
   try {
     const selected = document.querySelector('#document-scope').value;
-    const response = await fetch('/api/ask', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({query, ...(selected ? {document_id:selected} : {})})});
-    const data = await response.json();
+    const options = {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({query, ...(selected ? {document_id:selected} : {})})};
+    let response = await fetch('/api/ask', options);
+    let data = await response.json();
+    if (response.status === 503 && data.error === 'Gemini is temporarily unavailable. Retry later.') {
+      message('Gemini is temporarily unavailable. Retrying your question once…');
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      response = await fetch('/api/ask', options);
+      data = await response.json();
+    }
     if (!response.ok) throw new Error(data.error || 'The research request failed.');
     render(data);
     feedback.hidden = true;
