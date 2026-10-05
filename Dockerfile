@@ -12,17 +12,6 @@ COPY pharma/*.py ./pharma/
 COPY frontend/ ./frontend/
 COPY knowledge/ ./knowledge/
 COPY evaluation/ ./evaluation/
-# Adapt the existing local-only origin check for Railway's HTTPS domain.
-# This keeps the Dockerfile usable without another source-file download.
-RUN python - <<'PY'
-from pathlib import Path
-path = Path('/app/pharma/web.py')
-text = path.read_text(encoding='utf-8')
-marker = "f'http://localhost:{PORT}',"
-replacement = marker + "\n        os.getenv('APP_ORIGIN') or ('https://' + os.getenv('RAILWAY_PUBLIC_DOMAIN', '')),"
-assert text.count(marker) == 1, 'Unsupported web.py: review the origin check.'
-path.write_text(text.replace(marker, replacement), encoding='utf-8')
-PY
 # Attach a Railway Volume at /data for persistent uploads and ChromaDB.
 RUN mkdir -p /data/chroma_db /data/uploads \
     && ln -s /data/chroma_db /app/chroma_db \
